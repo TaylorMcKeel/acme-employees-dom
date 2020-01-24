@@ -8,28 +8,37 @@ const employees = [
     { id: 8, name: 'shep Jr.'},
     { id: 99, name: 'lucy'}
   ];
-
-  const nameContainer = document.getElementById('employees')
-
-const showEmployees = ()=>{
-    let names = []
-    employees.forEach((entry) => {
-        names.push(entry.name)
-    })
-
-    nameContainer.innerHTMl = names
-
-}
+   
+const list = document.querySelector('#employees')
 
 
 
 
+  list.addEventListener('click', (ev)=> {
+    
+    const target = ev.target;
+    if(target.tagName === 'LI'){
+      const idx = [...list.children].indexOf(target);
+      const numFaves = employees.filter(employee => employee.favorite).length
+      if(!target.classList.contains('favorite')&& numFaves === 3){
+          alert('only 3!')
+          return
+      }
+      employees[idx].favorite = !employees[idx].favorite;
+    }
+    render();
 
+    
+  });
 
+  const render = ()=> {
+    const html = employees.map( employee => {
+      return `
+        <li data-id='${employee.id}' ${ employee.favorite ? "class='favorite'": ''}>${ employee.name }</li>
+      `;
+    }).join('');
+    list.innerHTML = html;
+  };
 
-const render = ()=>{
-    const html = data.map(num => {
-        return `<li>${num}</ls>`
-    }).join('')
-    list.innerHTML = html
-}
+  render();
+
